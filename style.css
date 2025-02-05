@@ -2,6 +2,12 @@ table {
     background-color: #232020;
 }
 
+caption {
+    font-size: 23px;
+    padding-top: 2px;
+    padding-bottom: 4px;
+}
+
 tr {
     text-align: center;
 }
