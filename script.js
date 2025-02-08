@@ -33,9 +33,15 @@ const weight = {
     cssClass: ".w",
     backgroundColorNoData: "#ecb47c",
     backgroundColorHasData: "#87b8e1",
+
     weightIncreasedInnerHTML: EmojiBullish,
     weightDecreasedInnerHTML: EmojiBearish,
     weightEqualInnerHTML: UnicodeHeavyEqual,
+
+    increseNumStyle: "<span style=\"color:red; font-size:16px\"><b>+",
+    dereaseNumStyle: "<span style=\"color:green; font-size:16px\"><b>",
+    increseEmjStyle: "<span style=\"font-size:12px\">",
+    dereaseEmjStyle: "<span style=\"font-size:12px\">" ,
 }
 
 function update(e) {
@@ -60,12 +66,12 @@ function updateWeight(e) {
                 let diff = thisWeekWgt - lastWeekWgt;
                 nodeList[i].innerHTML += "<br>";
                 if(diff > 0) {
-                    nodeList[i].innerHTML += "<span style=\"color:red\"><b> +" + diff.toFixed(1) + "</span> ";
-                    nodeList[i].innerHTML += e.weightIncreasedInnerHTML;
+                    nodeList[i].innerHTML += e.increseNumStyle + diff.toFixed(1) + "</span>";
+                    nodeList[i].innerHTML += e.increseEmjStyle + e.weightIncreasedInnerHTML + "</span>";
                 }
                 else if(diff < 0) {
-                    nodeList[i].innerHTML += "<span style=\"color:green\"><b>" + diff.toFixed(1) + "</span> ";
-                    nodeList[i].innerHTML += e.weightDecreasedInnerHTML;
+                    nodeList[i].innerHTML +=  e.dereaseNumStyle + diff.toFixed(1) + "</span>";
+                    nodeList[i].innerHTML +=  e.dereaseEmjStyle + e.weightDecreasedInnerHTML + "</span>";
                 }
                 else {
                     nodeList[i].innerHTML += diff.toFixed(1);
