@@ -16,6 +16,10 @@ th {
     width: 100px;
 }
 
+.thPersian {
+    font-size: 12px;
+}
+
 .headerRow {
     background-color: #D4A017;
 }

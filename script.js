@@ -60,11 +60,11 @@ function updateWeight(e) {
                 let diff = thisWeekWgt - lastWeekWgt;
                 nodeList[i].innerHTML += "<br>";
                 if(diff > 0) {
-                    nodeList[i].innerHTML += "<span style=\"color:red\">" + diff.toFixed(1) + "</span> ";
+                    nodeList[i].innerHTML += "<span style=\"color:red\"><b> +" + diff.toFixed(1) + "</span> ";
                     nodeList[i].innerHTML += e.weightIncreasedInnerHTML;
                 }
                 else if(diff < 0) {
-                    nodeList[i].innerHTML += "<span style=\"color:green\">" + diff.toFixed(1) + "</span> ";
+                    nodeList[i].innerHTML += "<span style=\"color:green\"><b>" + diff.toFixed(1) + "</span> ";
                     nodeList[i].innerHTML += e.weightDecreasedInnerHTML;
                 }
                 else {
