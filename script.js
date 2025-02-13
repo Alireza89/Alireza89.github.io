@@ -29,6 +29,12 @@ const failure = {
     innerHTML: "<br>" + EmojiSad + EmojiWhiteExclm,
 }
 
+const secondChance = {
+    cssClass: ".sc",
+    backgroundColor: "#f5d742", 
+    innerHTML: "<br>" + "<span style=\"font-size:10px\">2nd chance</span>",
+};
+
 const weight = {
     cssClass: ".w",
     backgroundColorNoData: "#ecb47c",
@@ -88,6 +94,7 @@ console.log("update begins!")
 update(noData);
 update(success);
 update(failure);
+update(secondChance);
 updateWeight(weight);
 
 console.log("update Finishes!")
