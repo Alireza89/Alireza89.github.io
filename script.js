@@ -11,6 +11,11 @@ const EmojiBullish = "&#128200";
 const EmojiBearish = "&#128201";
 const UnicodeHeavyEqual = "\u{0001f7f0}";
 
+const monthNames = ["Jan", "Feb", "Mar", 
+                    "Apr", "May", "Jun", 
+                    "Jul", "Aug", "Sep", 
+                    "Oct", "Nov", "Dec"];
+
 const noData = {
     cssClass: ".n",
     backgroundColor: "#FED8B1", 
@@ -87,6 +92,40 @@ function updateWeight(e) {
         }
     }
 }
+
+let onset = new Date(2025, 0, 13);
+let today = new Date();
+
+console.log("Onset: ", monthNames[onset.getMonth()], onset.getDate(), onset.getFullYear());
+console.log("Today: ", monthNames[today.getMonth()], today.getDate(), today.getFullYear());
+
+let table = document.getElementById("progressTable");
+for (let rowIdx = 1; rowIdx < table.rows.length; rowIdx++) { // start row at 1 because of the header
+    let row = table.rows[rowIdx];
+    for (let cellIdx = 0; cellIdx < row.cells.length - 1; cellIdx++) { // length - 1 to exclude last coloumn
+        row.cells[cellIdx].rowPos = rowIdx - 1; // - 1, so rowPos starts at 0
+        row.cells[cellIdx].cellPos = cellIdx ;
+        
+        row.cells[cellIdx].cellDate = new Date(onset);
+        row.cells[cellIdx].cellDate.setDate( onset.getDate() + 
+                row.cells[cellIdx].cellPos + (7 * row.cells[cellIdx].rowPos)
+        );
+        
+        row.cells[cellIdx].innerHTML = 
+            monthNames[row.cells[cellIdx].cellDate.getMonth()] + " " + row.cells[cellIdx].cellDate.getDate();
+    }
+}
+
+function evtHandler() {
+    if(this.cellDate) {
+        console.log("Row:", this.rowPos, "Col:", this.cellPos, 
+            "Date:", monthNames[this.cellDate.getMonth()], this.cellDate.getDate(), this.cellDate.getFullYear());
+        // alert("Row: " + this.rowPos + " Col: " + this.cellPos +
+        //     " Date: "+monthNames[this.cellDate.getMonth()]+" "+this.cellDate.getDate()+" "+this.cellDate.getFullYear());
+    }
+}
+const tdList = document.querySelectorAll('#progressTable td');
+tdList.forEach(e => e.addEventListener("click", evtHandler));
 
 
 console.log("update begins!")
