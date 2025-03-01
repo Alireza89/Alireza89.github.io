@@ -27,3 +27,7 @@ th {
     position: sticky;
     top: 0;
 }
+
+.emptyPadding {
+    padding-top: 600px;
+}
