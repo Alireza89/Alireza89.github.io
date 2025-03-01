@@ -16,6 +16,8 @@ const monthNames = ["Jan", "Feb", "Mar",
                     "Jul", "Aug", "Sep", 
                     "Oct", "Nov", "Dec"];
 
+const scrolTopOffset = -3 * 50 + 2;
+
 const noData = {
     cssClass: ".n",
     backgroundColor: "#FED8B1", 
@@ -141,7 +143,7 @@ function scrollToDate(date) {
                             "Week Number:", cellDate.getWeekNumber(),
                             "offsetTop: ", tdList[tdIdx].offsetTop);
                 window.scroll({
-                    top: tdList[tdIdx].offsetTop - 50 + 6,
+                    top: tdList[tdIdx].offsetTop + scrolTopOffset,
                     behavior: "smooth",
                     });
                 
@@ -160,7 +162,7 @@ function evtHandler() {
         // alert("Row: " + this.rowPos + " Col: " + this.cellPos +
         //     " Date: "+monthNames[this.cellDate.getMonth()]+" "+this.cellDate.getDate()+" "+this.cellDate.getFullYear());
         window.scroll({
-            top: this.offsetTop - 50 + 6,
+            top: this.offsetTop + scrolTopOffset,
             behavior: "smooth",
           });
     }
@@ -176,6 +178,7 @@ update(success);
 update(failure);
 update(secondChance);
 updateWeight(weight);
-scrollToDate(today);
+
+setTimeout(scrollToDate, 300, today);
 
 console.log("update Finishes!")
