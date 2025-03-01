@@ -174,11 +174,11 @@ function evtHandler() {
             " ofsTop: "+ this.offsetTop+ " ofsLft: "+ this.offsetLeft
         );
         */
-        window.scroll({
-            top: this.offsetTop + scrolTopOffset,
-            behavior: "smooth",
-          });
     }
+    window.scroll({
+        top: this.offsetTop + scrolTopOffset,
+        behavior: "smooth",
+      });
 }
 const tdList = document.querySelectorAll('#progressTable td');
 tdList.forEach(e => e.addEventListener("click", evtHandler));
