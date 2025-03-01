@@ -119,9 +119,15 @@ for (let rowIdx = 1; rowIdx < table.rows.length; rowIdx++) { // start row at 1 b
 function evtHandler() {
     if(this.cellDate) {
         console.log("Row:", this.rowPos, "Col:", this.cellPos, 
-            "Date:", monthNames[this.cellDate.getMonth()], this.cellDate.getDate(), this.cellDate.getFullYear());
+            "Date:", monthNames[this.cellDate.getMonth()], this.cellDate.getDate(), this.cellDate.getFullYear(),
+            "ofsTop: ", this.offsetTop, "ofsLft: ", this.offsetLeft
+        );
         // alert("Row: " + this.rowPos + " Col: " + this.cellPos +
         //     " Date: "+monthNames[this.cellDate.getMonth()]+" "+this.cellDate.getDate()+" "+this.cellDate.getFullYear());
+        window.scroll({
+            top: this.offsetTop - 50 + 6,
+            behavior: "smooth",
+          });
     }
 }
 const tdList = document.querySelectorAll('#progressTable td');
