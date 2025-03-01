@@ -17,6 +17,7 @@ const monthNames = ["Jan", "Feb", "Mar",
                     "Oct", "Nov", "Dec"];
 
 const scrolTopOffset = -3 * 50 + 2; // tr.height: 50px;
+const borderStyle = "4px solid green";
 
 const noData = {
     cssClass: ".n",
@@ -127,7 +128,7 @@ function createCellDate(onsetDate) {
 }
 
 function scrollToDate(date) {
-    console.log("scroll To Date: ", monthNames[date.getMonth()], date.getDate(), date.getFullYear(),
+    console.log("scroll To Date:", monthNames[date.getMonth()], date.getDate(), date.getFullYear(),
                 "Week Number:", date.getWeekNumber());
 
     const tdList = document.querySelectorAll('#progressTable td');
@@ -135,7 +136,7 @@ function scrollToDate(date) {
         if(tdList[tdIdx].cellDate) {
             let cellDate = tdList[tdIdx].cellDate;
             if(date.getWeekNumber() == cellDate.getWeekNumber()) {
-                console.log("scroll to cellDate: ", monthNames[cellDate.getMonth()], cellDate.getDate(), cellDate.getFullYear(),
+                console.log("scroll to cellDate:", monthNames[cellDate.getMonth()], cellDate.getDate(), cellDate.getFullYear(),
                             "Week Number:", cellDate.getWeekNumber(),
                             "offsetTop: ", tdList[tdIdx].offsetTop);
                 window.scroll({
@@ -143,6 +144,18 @@ function scrollToDate(date) {
                     behavior: "smooth",
                     });
                 
+                const numberOfColumns = 6;
+                for(let tdIdxOffset = 0; tdIdxOffset < numberOfColumns; tdIdxOffset++) {
+                    tdList[tdIdx + tdIdxOffset].style.borderTop= borderStyle;
+                    tdList[tdIdx + tdIdxOffset].style.borderBottom = borderStyle;
+                    if(tdIdxOffset == 0) {
+                        tdList[tdIdx + tdIdxOffset].style.borderLeft= borderStyle;
+                    } 
+                    else if(tdIdxOffset == numberOfColumns -1) { 
+                        tdList[tdIdx + tdIdxOffset].style.borderRight= borderStyle;
+                    }
+                }
+
                 break;
             }
         }
@@ -175,8 +188,8 @@ console.log("Update Begins!")
 
 let onset = new Date(2025, 0, 13);
 let today = new Date();
-console.log("Onset: ", monthNames[onset.getMonth()], onset.getDate(), onset.getFullYear());
-console.log("Today: ", monthNames[today.getMonth()], today.getDate(), today.getFullYear());
+console.log("Onset:", monthNames[onset.getMonth()], onset.getDate(), onset.getFullYear());
+console.log("Today:", monthNames[today.getMonth()], today.getDate(), today.getFullYear());
 
 createCellDate(onset)
 update(noData);
