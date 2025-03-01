@@ -16,7 +16,7 @@ const monthNames = ["Jan", "Feb", "Mar",
                     "Jul", "Aug", "Sep", 
                     "Oct", "Nov", "Dec"];
 
-const scrolTopOffset = -3 * 50 + 2; // tr.height: 50px;
+const scrolTopOffset = -4 * 50; // tr.height: 50px;
 const borderStyle = "4px solid green";
 
 const noData = {
