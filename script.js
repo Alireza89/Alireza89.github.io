@@ -17,7 +17,8 @@ const monthNames = ["Jan", "Feb", "Mar",
                     "Oct", "Nov", "Dec"];
 
 const scrolTopOffset = -4 * 50; // tr.height: 50px;
-const borderStyle = "4px solid green";
+const weekBorderStyle = "3px solid darkGreen";
+const dayBorderStyle = "3px dotted darkGreen";
 
 const noData = {
     cssClass: ".n",
@@ -112,17 +113,19 @@ function createCellDate(onsetDate) {
     let table = document.getElementById("progressTable");
     for (let rowIdx = 1; rowIdx < table.rows.length; rowIdx++) { // start row at 1 because of the header
         let row = table.rows[rowIdx];
-        for (let cellIdx = 0; cellIdx < row.cells.length - 1; cellIdx++) { // length - 1 to exclude last coloumn
+        for (let cellIdx = 0; cellIdx < row.cells.length ; cellIdx++) {
             row.cells[cellIdx].rowPos = rowIdx - 1; // - 1, so rowPos starts at 0
             row.cells[cellIdx].cellPos = cellIdx ;
-            
+
             row.cells[cellIdx].cellDate = new Date(onsetDate);
             row.cells[cellIdx].cellDate.setDate( onsetDate.getDate() + 
-                    row.cells[cellIdx].cellPos + (7 * row.cells[cellIdx].rowPos)
-            );
+                    row.cells[cellIdx].cellPos + (7 * row.cells[cellIdx].rowPos));
+
+            if(cellIdx != row.cells.length - 1) { // exclude the last column
+                row.cells[cellIdx].innerHTML = 
+                    monthNames[row.cells[cellIdx].cellDate.getMonth()] + " " + row.cells[cellIdx].cellDate.getDate();
+            }
             
-            row.cells[cellIdx].innerHTML = 
-                monthNames[row.cells[cellIdx].cellDate.getMonth()] + " " + row.cells[cellIdx].cellDate.getDate();
         }
     }
 }
@@ -139,24 +142,32 @@ function scrollToDate(date) {
                 console.log("scroll to cellDate:", monthNames[cellDate.getMonth()], cellDate.getDate(), cellDate.getFullYear(),
                             "Week Number:", cellDate.getWeekNumber(),
                             "offsetTop: ", tdList[tdIdx].offsetTop);
-                window.scroll({
-                    top: tdList[tdIdx].offsetTop + scrolTopOffset,
-                    behavior: "smooth",
-                    });
-                
-                const numberOfColumns = 6;
-                for(let tdIdxOffset = 0; tdIdxOffset < numberOfColumns; tdIdxOffset++) {
-                    tdList[tdIdx + tdIdxOffset].style.borderTop= borderStyle;
-                    tdList[tdIdx + tdIdxOffset].style.borderBottom = borderStyle;
-                    if(tdIdxOffset == 0) {
-                        tdList[tdIdx + tdIdxOffset].style.borderLeft= borderStyle;
-                    } 
-                    else if(tdIdxOffset == numberOfColumns -1) { 
-                        tdList[tdIdx + tdIdxOffset].style.borderRight= borderStyle;
+
+                const cellPos = tdList[tdIdx].cellPos;
+                if(date.getDay() == cellDate.getDay()) {
+                    if(cellPos != 5) { // Exclude the last column
+                        tdList[tdIdx].style.borderTop = dayBorderStyle;
+                        tdList[tdIdx].style.borderBottom = dayBorderStyle;
+                        tdList[tdIdx].style.borderLeft = dayBorderStyle;
+                        tdList[tdIdx].style.borderRight= dayBorderStyle
                     }
                 }
+                else {
+                    tdList[tdIdx].style.borderTop = weekBorderStyle;
+                    tdList[tdIdx].style.borderBottom = weekBorderStyle;
+                }
 
-                break;
+                if(cellPos == 5) { // last column
+                    tdList[tdIdx].style.borderTop = weekBorderStyle;
+                    tdList[tdIdx].style.borderBottom = weekBorderStyle;
+
+                    window.scroll({
+                        top: tdList[tdIdx].offsetTop + scrolTopOffset,
+                        behavior: "smooth",
+                    });
+                    
+                    break;
+                }
             }
         }
     }
@@ -167,18 +178,17 @@ function evtHandler() {
         console.log("Row:", this.rowPos, "Col:", this.cellPos, 
             "Date:", monthNames[this.cellDate.getMonth()], this.cellDate.getDate(), this.cellDate.getFullYear(),
             "ofsTop:", this.offsetTop, "ofsLft:", this.offsetLeft
-        );
-        /*
-        alert("Row: "+ this.rowPos+ " Col: "+ this.cellPos+ 
-            " Date: "+ monthNames[this.cellDate.getMonth()]+ this.cellDate.getDate()+ this.cellDate.getFullYear()+
-            " ofsTop: "+ this.offsetTop+ " ofsLft: "+ this.offsetLeft
-        );
-        */
-    }
+        );     
+        // alert("Row: "+ this.rowPos+ " Col: "+ this.cellPos+ 
+        //     " Date: "+ monthNames[this.cellDate.getMonth()]+ this.cellDate.getDate()+ this.cellDate.getFullYear()+
+        //     " ofsTop: "+ this.offsetTop+ " ofsLft: "+ this.offsetLeft
+        // );
+        
     window.scroll({
         top: this.offsetTop + scrolTopOffset,
         behavior: "smooth",
-      });
+        });
+    }
 }
 const tdList = document.querySelectorAll('#progressTable td');
 tdList.forEach(e => e.addEventListener("click", evtHandler));
