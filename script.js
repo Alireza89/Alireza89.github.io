@@ -55,6 +55,18 @@ const weight = {
     dereaseEmjStyle: "<span style=\"font-size:12px\">" ,
 }
 
+Date.prototype.getWeekNumber = function() { // https://weeknumber.com/how-to/javascript
+    let date = new Date(this.getTime());
+    date.setHours(0, 0, 0, 0);
+    // Thursday in current week decides the year.
+    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+    // January 4 is always in week 1.
+    let week1 = new Date(date.getFullYear(), 0, 4);
+    // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
+                          - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
 function update(e) {
     const nodeList = document.querySelectorAll(e.cssClass);
     for (let i = 0; i < nodeList.length; i++) {
@@ -116,6 +128,29 @@ for (let rowIdx = 1; rowIdx < table.rows.length; rowIdx++) { // start row at 1 b
     }
 }
 
+function scrollToDate(date) {
+    console.log("scroll To Date: ", monthNames[today.getMonth()], today.getDate(), today.getFullYear(),
+                "Week Number:", date.getWeekNumber());
+
+    const tdList = document.querySelectorAll('#progressTable td');
+    for (let tdIdx = 0; tdIdx < tdList.length; tdIdx++) { 
+        if(tdList[tdIdx].cellDate) {
+            let cellDate = tdList[tdIdx].cellDate;
+            if(date.getWeekNumber() == cellDate.getWeekNumber()) {
+                console.log("scroll to cellDate: ", monthNames[cellDate.getMonth()], cellDate.getDate(), cellDate.getFullYear(),
+                            "Week Number:", cellDate.getWeekNumber(),
+                            "offsetTop: ", tdList[tdIdx].offsetTop);
+                window.scroll({
+                    top: tdList[tdIdx].offsetTop - 50 + 6,
+                    behavior: "smooth",
+                    });
+                
+                break;
+            }
+        }
+    }
+}
+
 function evtHandler() {
     if(this.cellDate) {
         console.log("Row:", this.rowPos, "Col:", this.cellPos, 
@@ -141,5 +176,6 @@ update(success);
 update(failure);
 update(secondChance);
 updateWeight(weight);
+scrollToDate(today);
 
 console.log("update Finishes!")
