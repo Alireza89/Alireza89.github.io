@@ -138,7 +138,7 @@ function scrollToDate(date) {
     for (let tdIdx = 0; tdIdx < tdList.length; tdIdx++) { 
         if(tdList[tdIdx].cellDate) {
             let cellDate = tdList[tdIdx].cellDate;
-            if(date.getWeekNumber() == cellDate.getWeekNumber()) {
+            if(date.getWeekNumber() == cellDate.getWeekNumber() && date.getFullYear() == cellDate.getFullYear()) {
                 console.log("scroll to cellDate:", monthNames[cellDate.getMonth()], cellDate.getDate(), cellDate.getFullYear(),
                             "Week Number:", cellDate.getWeekNumber(),
                             "offsetTop: ", tdList[tdIdx].offsetTop);
