@@ -29,6 +29,13 @@ th {
     top: 0;
 }
 
+.yearRow {
+    background-color: #8febd3;
+    font-size: 18px;
+    font-weight: bold;
+    top: 0;
+}
+
 .emptyPadding {
     padding-top: 600px;
 }

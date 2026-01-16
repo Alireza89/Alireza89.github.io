@@ -111,13 +111,14 @@ function updateWeight(e) {
 
 function createCellDate(onsetDate) {
     let table = document.getElementById("progressTable");
+    let weekRowIdx = 0
     for (let rowIdx = 0; rowIdx < table.rows.length; rowIdx++) {
         let row = table.rows[rowIdx];
         if(!row.classList.contains('week')) {
             continue
         }
         for (let cellIdx = 0; cellIdx < row.cells.length ; cellIdx++) {
-            row.cells[cellIdx].rowPos = rowIdx - 1; // - 1, so rowPos starts at 0
+            row.cells[cellIdx].rowPos = weekRowIdx;
             row.cells[cellIdx].cellPos = cellIdx ;
 
             row.cells[cellIdx].cellDate = new Date(onsetDate);
@@ -130,6 +131,7 @@ function createCellDate(onsetDate) {
             }
             
         }
+        weekRowIdx = weekRowIdx + 1
     }
 }
 
