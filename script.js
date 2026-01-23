@@ -181,6 +181,107 @@ function scrollToDate(date) {
     }
 }
 
+function updateCanvas(weights) {
+    const canvas = document.getElementById("weightChart");
+    const ctx = canvas.getContext("2d");
+
+    const padding = 50;
+    const width = canvas.width - padding * 2;
+    const height = canvas.height - padding * 2;
+
+    const minWeight = Math.min(...weights);
+    const maxWeight = Math.max(...weights);
+
+    function drawAxes() {
+        ctx.beginPath();
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, canvas.height - padding);
+        ctx.lineTo(canvas.width - padding, canvas.height - padding);
+        ctx.stroke();
+    }
+
+    function drawLine() {
+        ctx.beginPath();
+        weights.forEach((weight, index) => {
+            const x = padding + (index / (weights.length - 1)) * width;
+            const y =
+            canvas.height -
+            padding -
+            ((weight - minWeight) / (maxWeight - minWeight)) * height;
+
+            if (index === 0) {
+            ctx.moveTo(x, y);
+            } else {
+            ctx.lineTo(x, y);
+            }
+        });
+
+        ctx.strokeStyle = "#0077cc";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
+    function drawPoints() {
+        weights.forEach((weight, index) => {
+            if(index % 4 == 0 || weight == minWeight || weight == maxWeight || index == weights.length - 1) {
+                ctx.fillStyle = "#0077cc";
+                const x = padding + (index / (weights.length - 1)) * width;
+                const y =
+                canvas.height -
+                padding -
+                ((weight - minWeight) / (maxWeight - minWeight)) * height;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        });
+    }
+
+    function drawLabels() {
+        ctx.fillStyle = "#000";
+        ctx.font = "12px Arial";
+
+        ctx.fillText("Week", canvas.width / 2, canvas.height - 10);
+        ctx.save();
+        ctx.translate(15, canvas.height / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText("Weight (kg)", 0, 0);
+        ctx.restore();
+    }
+
+    function drawWeightValues() {
+        ctx.fillStyle = "#000";
+        ctx.font = "12px Arial";
+
+        weights.forEach((weight, index) => {
+            if(index % 4 == 0 || weight == minWeight || weight == maxWeight || index == weights.length - 1) {
+                const x = padding + (index / (weights.length - 1)) * width;
+                const y =
+                canvas.height -
+                padding -
+                ((weight - minWeight) / (maxWeight - minWeight)) * height;
+
+                if(weight == minWeight) {
+                    ctx.fillText(weight.toString(), x - 10, y + 20);
+                }
+                else if(weight == maxWeight) {
+                    ctx.fillText(weight.toString(), x - 10, y - 10);
+                }
+                else {
+                    ctx.fillText(weight.toString(), x - 10, y - 10);
+                }
+            }
+        });
+    }
+
+    drawAxes();
+    drawLine();
+    drawPoints();
+    drawLabels();
+    drawWeightValues();
+}
+
 function evtHandler() {
     if(this.cellDate) {
         console.log("Row:", this.rowPos, "Col:", this.cellPos, 
@@ -215,7 +316,7 @@ update(success);
 update(failure);
 update(secondChance);
 weights = updateWeight(weight);
+updateCanvas(weights)
 setTimeout(scrollToDate, 300, today);
 
-console.log("weights: ", weights)
 console.log("Update Ends!")

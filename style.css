@@ -39,3 +39,8 @@ th {
 .emptyPadding {
     padding-top: 600px;
 }
+
+canvas {
+    display: block;
+    margin: 0 auto;
+}
