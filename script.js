@@ -185,7 +185,7 @@ function updateCanvas(weights) {
     const canvas = document.getElementById("weightChart");
     const ctx = canvas.getContext("2d");
 
-    const padding = 50;
+    const padding = 30;
     const width = canvas.width - padding * 2;
     const height = canvas.height - padding * 2;
 
@@ -263,7 +263,7 @@ function updateCanvas(weights) {
                 ((weight - minWeight) / (maxWeight - minWeight)) * height;
 
                 if(weight == minWeight) {
-                    ctx.fillText(weight.toString(), x - 10, y + 20);
+                    ctx.fillText(weight.toString(), x - 10, y + 18);
                 }
                 else if(weight == maxWeight) {
                     ctx.fillText(weight.toString(), x - 10, y - 10);
