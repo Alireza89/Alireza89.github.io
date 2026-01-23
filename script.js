@@ -81,15 +81,17 @@ function update(e) {
 
 function updateWeight(e) {
     const nodeList = document.querySelectorAll(e.cssClass);
+    let weights = [];
     for (let i = 0; i < nodeList.length; i++) {
         if(nodeList[i].innerHTML == "") {
             nodeList[i].style.backgroundColor = e.backgroundColorNoData;
             nodeList[i].innerHTML += EmojiRedQuestion;
         } else {
             nodeList[i].style.backgroundColor = e.backgroundColorHasData;
+            let thisWeekWgt = parseFloat(nodeList[i].innerHTML);
+            weights.push(thisWeekWgt)
             if(i > 0) {
                 let lastWeekWgt = parseFloat(nodeList[i-1].innerHTML);
-                let thisWeekWgt = parseFloat(nodeList[i].innerHTML);
                 let diff = thisWeekWgt - lastWeekWgt;
                 nodeList[i].innerHTML += "<br>";
                 if(diff > 0) {
@@ -107,6 +109,8 @@ function updateWeight(e) {
             }
         }
     }
+
+    return weights;
 }
 
 function createCellDate(onsetDate) {
@@ -136,7 +140,7 @@ function createCellDate(onsetDate) {
 }
 
 function scrollToDate(date) {
-    console.log("scroll To Date:", monthNames[date.getMonth()], date.getDate(), date.getFullYear(),
+    console.log("Try to scroll To Date:", monthNames[date.getMonth()], date.getDate(), date.getFullYear(),
                 "Week Number:", date.getWeekNumber());
 
     const tdList = document.querySelectorAll('#progressTable td');
@@ -144,10 +148,6 @@ function scrollToDate(date) {
         if(tdList[tdIdx].cellDate) {
             let cellDate = tdList[tdIdx].cellDate;
             if(date.getWeekNumber() == cellDate.getWeekNumber() && date.getFullYear() == cellDate.getFullYear()) {
-                console.log("scroll to cellDate:", monthNames[cellDate.getMonth()], cellDate.getDate(), cellDate.getFullYear(),
-                            "Week Number:", cellDate.getWeekNumber(),
-                            "offsetTop: ", tdList[tdIdx].offsetTop);
-
                 const cellPos = tdList[tdIdx].cellPos;
                 if(date.getDay() == cellDate.getDay()) {
                     if(cellPos != 5) { // Exclude the last column
@@ -163,6 +163,9 @@ function scrollToDate(date) {
                 }
 
                 if(cellPos == 5) { // last column
+                    console.log("scroll to cellDate:", monthNames[cellDate.getMonth()], cellDate.getDate(), cellDate.getFullYear(),
+                                "Week Number:", cellDate.getWeekNumber(),
+                                "offsetTop: ", tdList[tdIdx].offsetTop);
                     tdList[tdIdx].style.borderTop = weekBorderStyle;
                     tdList[tdIdx].style.borderBottom = weekBorderStyle;
 
@@ -211,7 +214,8 @@ update(noData);
 update(success);
 update(failure);
 update(secondChance);
-updateWeight(weight);
+weights = updateWeight(weight);
 setTimeout(scrollToDate, 300, today);
 
+console.log("weights: ", weights)
 console.log("Update Ends!")
